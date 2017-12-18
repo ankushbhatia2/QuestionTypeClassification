@@ -7,6 +7,7 @@ from sklearn.preprocessing import LabelEncoder
 import pandas as pd
 import spacy
 import numpy as np
+import time
 
 nlp = spacy.load('en')
 with open('affirmations.txt') as f:
@@ -80,7 +81,23 @@ class PredictQuestionType(object):
             print 'Question :', row.sentence.strip()
             print 'Predicted Category :', row.predicted_cat
 
+        fname = 'predicted_test_'+str(int(time.time()))+'.csv'
+        print 'Saving the output to :', fname
+        self.sents.to_csv(fname)
 
-#predictor = PredictQuestionType(document_path="test_final.txt")
-#predictor = PredictQuestionType(documents=["What time does the train leave ?"])
-#predictor.predict()
+
+while True:
+    try:
+        print 'Do you have a document file? (y/n) (Press Ctrl+C to exit)'
+        prompt = str(raw_input())
+        if prompt == 'y':
+            document_path = str(raw_input("Please enter the full document path :\n"))
+            predictor = PredictQuestionType(document_path=document_path)
+            predictor.predict()
+        else:
+            document = str(raw_input("Please enter your sentence :\n"))
+            predictor = PredictQuestionType(document_path=[document])
+            predictor.predict()
+    except KeyboardInterrupt:
+        print 'Exiting.'
+        break
