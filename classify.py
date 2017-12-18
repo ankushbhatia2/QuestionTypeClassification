@@ -21,7 +21,7 @@ class PredictQuestionType(object):
         elif document_path:
             try:
                 with open(document_path) as f:
-                    raw_texts = [line for line in f.readlines()]
+                    raw_texts = [line.strip() for line in f.readlines()]
             except IOError:
                 raw_texts = None
         else:
@@ -83,7 +83,7 @@ class PredictQuestionType(object):
 
         fname = 'predicted_test_'+str(int(time.time()))+'.csv'
         print 'Saving the output to :', fname
-        self.sents.to_csv(fname)
+        self.sents.to_csv(fname, index=False)
 
 
 while True:
